@@ -16,20 +16,24 @@ const getInfo = async () => {
   try {
     const accounts = await web3.eth.getAccounts();
     console.log("Accounts: "+accounts);
-    console.log("Receipent : ", accounts[1]);
-    console.log("Initial Balance : ", await web3.eth.getBalance(accounts[1]));
+    console.log("Receipent : ", accounts[0]);
+    console.log("Initial Balance : ", await web3.eth.getBalance(accounts[0]));
 
-    for(let i=2; i<=5 ;i++)
+    // var lastNonce = await web3.eth.getTransactionCount(accounts[0]);
+    // console.log("Last NONCE: ",lastNonce);
+
+    for(let i=1; i<=100 ;i++)
     {
       let Dpath="m/44'/60'/0'/"+i;
       const wallet = ethers.Wallet.fromMnemonic(mnemonicPhrase, Dpath);
       let rec =wallet.address
       console.log("Receipent"+i+" : ", rec);
-      console.log("Balance"+i+" : ", await web3.eth.getBalance(rec));
-      web3.eth.sendTransaction({ from: accounts[1], to: rec, value: '1'});
+      // console.log("Balance"+i+" : ", await web3.eth.getBalance(rec));
+      await web3.eth.sendTransaction({ from: accounts[0], to: rec, value: '1'});
+      // lastNonce++;
     }
 
-    console.log("End Main Balance : ", await web3.eth.getBalance(accounts[1]));
+    console.log("End Main Balance : ", await web3.eth.getBalance(accounts[0]));
     
 
 
