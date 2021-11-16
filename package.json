@@ -12,6 +12,7 @@
   "dependencies": {
     "@truffle/hdwallet-provider": "^1.6.0",
     "ethers": "^5.5.1",
+    "node-worker-threads-pool": "^1.5.1",
     "web3": "^1.6.0"
   }
 }

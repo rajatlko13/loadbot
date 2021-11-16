@@ -1,6 +1,8 @@
 const Web3 = require("web3")
 const ethers = require("ethers");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
+const SendTrans = require('./build/contracts/SendTrans.json');
+
 const mnemonicPhrase = "envelope direct allow creek endless detect mountain squeeze mass welcome virtual sample"; // 12 word mnemonic
 require('events').EventEmitter.defaultMaxListeners = 0
 
@@ -12,6 +14,11 @@ let provider = new HDWalletProvider({
 });
 
 const web3 = new Web3(provider);
+
+const instance = new web3.eth.Contract(
+    JSON.parse(JSON.stringify(SendTrans.abi)),
+    "0x204f0f739C49F6D0441a862C3B652E0Bd2Cad4BA"
+);
 
 const getInfo = async () => {
   try {
@@ -25,22 +32,23 @@ const getInfo = async () => {
 
     for(let i=0; i<5 ;i++)
     {
-      for (let j = 0; j < 500; j++) {
+      for (let j = 0; j < 100; j++) {
         let Dpath="m/44'/60'/0'/"+j;
         const wallet = ethers.Wallet.fromMnemonic(mnemonicPhrase, Dpath);
         let rec =wallet.address
-        console.log("Receipent"+(i*500 + j)+" : ", rec);
-        // console.log("Balance"+j+" : ", await web3.eth.getBalance(rec));
-        web3.eth.sendTransaction({ from: accounts[0], to: rec, value: '1'})
-        // .on('transactionHash', function(hash){
-        //   console.log("Hash: ",hash);
-        //   return hash;
-        // })
-        // .on('error', console.error);
+        console.log("Receipent"+(i*100 + j)+" : ", rec);
+        instance.methods.trans(rec).send({ from: accounts[0], value: 1})
+        // instance.methods.checkBal(rec).call();
+        // web3.eth.sendTransaction({ from: accounts[0], to: rec, value: '1'})
+        .on('transactionHash', function(hash){
+          console.log("Hash: ",hash);
+        })
+        .on('error', console.error);
         // console.log("HASH: ",j);
         // lastNonce++;
       }
-      await sleep(25000);
+      setImmediate(()=>{});
+    //   await sleep(5000);
     }
 
     console.log("End Main Balance : ", await web3.eth.getBalance(accounts[0]));
