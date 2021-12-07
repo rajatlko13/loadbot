@@ -27,4 +27,4 @@ const checkBalance = async (i) => {
   }
 }
 
-checkBalance(10);
+checkBalance(0);

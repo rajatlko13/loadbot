@@ -3,13 +3,13 @@ const Web3 = require("web3")
 const ethers = require("ethers");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-const mnemonicPhrase = "envelope direct allow creek endless detect mountain squeeze mass welcome virtual sample"; // 12 word mnemonic
+const mnemonicPhrase = "truck gallery select material claim elephant pear dog knock kitchen runway juice"; // 12 word mnemonic
 
 let provider = new HDWalletProvider({
   mnemonic: {
     phrase: mnemonicPhrase
   },
-  providerOrUrl: "http://127.0.0.1:8545"
+  providerOrUrl: "http://3.94.19.25:9545"
 });
 
 const web3 = new Web3(provider);
@@ -36,10 +36,10 @@ const runScript = async () => {
             console.log('First Mined', receipt.transactionHash)
         });
 
-        for (let i = 0; i < 5; i++) {
-            for (var j=1; j<2000; j++) {
-                console.log("count=",(i*2000 +j));
-                let n = i*2000 + j;
+        for (let i = 1; i < 1000; i++) {
+            for (var j=1; j<500; j++) {
+                console.log("count=",(i*500 +j));
+                let n = i*500 + j;
         
                 //Get a worker from the pool and execute the task
                 pool.exec({num: n}).then(result => {
@@ -49,9 +49,9 @@ const runScript = async () => {
         
             await web3.eth.sendTransaction({
                 from: accounts[0],
-                to: getRecipient(i*2000 + j),
+                to: getRecipient(i*500 + j),
                 value: 1,
-                nonce: (i*2000 + j)
+                nonce: (i*500 + j)
             })
             .on('transactionHash', function(hash){
                 console.log('Last Sent', hash)
@@ -59,7 +59,10 @@ const runScript = async () => {
             .on('receipt', function(receipt){
                 console.log('Last Mined', receipt.transactionHash)
             })
-            .on('error', console.error);
+            .on('error', function(error) {
+                console.log("Last ERROR: ",error);
+                i--;
+            });
         
         }
     } catch (error) {

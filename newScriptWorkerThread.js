@@ -3,13 +3,13 @@ const Web3 = require("web3");
 const ethers = require("ethers");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-const mnemonicPhrase = "envelope direct allow creek endless detect mountain squeeze mass welcome virtual sample"; // 12 word mnemonic
+const mnemonicPhrase = "truck gallery select material claim elephant pear dog knock kitchen runway juice"; // 12 word mnemonic
 
 let provider = new HDWalletProvider({
     mnemonic: {
       phrase: mnemonicPhrase
     },
-    providerOrUrl: "http://127.0.0.1:8545"
+    providerOrUrl: "http://3.94.19.25:9545"
 });
 const web3 = new Web3(provider);
 
@@ -20,7 +20,7 @@ parentPort.on("message", data => {
 function getHash(n) {
     var rec = getRecipient(n);
     web3.eth.sendTransaction({
-        from: "0x0766fd8a11485bb8c045919ac5a07c51b3d1696b",
+        from: "0x599D1c2286F18b2218bCa637F0F601bEda384a6f",
         to: rec,
         value: 1,
         nonce: n
@@ -28,7 +28,9 @@ function getHash(n) {
     .on('transactionHash', function(hash){
         console.log("Sent: ", hash)
     })
-    .on('error', console.error);
+    .on('error', function(error) {
+        console.log("ERROR: ",error);
+    });
 }
 
 const getRecipient = (i) => {
